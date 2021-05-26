@@ -1,0 +1,3956 @@
+{
+	"info": {
+		"_postman_id": "460527de-a770-4914-8393-ea90888ba388",
+		"name": "API Recurrent Payments - APIGee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/pmc_services/bank_services",
+			"item": [
+				{
+					"name": "GLCA",
+					"item": [
+						{
+							"name": "Alta de PA",
+							"item": [
+								{
+									"name": "Empresa con deuda informada",
+									"item": [
+										{
+											"name": "Alta de PA (con deuda) - Con Cuenta - GLCA",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.sendRequest({\r",
+															"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+															"    method: 'POST',\r",
+															"    header:{\r",
+															"        'content-type': 'application/x-www-form-urlencoded',\r",
+															"    },\r",
+															"    body: {\r",
+															"        mode: 'urlencoded',\r",
+															"        urlencoded: [\r",
+															"            \r",
+															"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+															"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+															"            \r",
+															"        ]\r",
+															"    }\r",
+															"    }, function (err, response) {\r",
+															"                    console.log(response.json());\r",
+															"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+															"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+															"        });\r",
+															"\r",
+															"\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"var Ajv = require('ajv'),\r",
+															"    ajv = new Ajv({logger: console}),\r",
+															"    schema = \r",
+															"{\r",
+															"    \"required\": [\r",
+															"        \"code\",\r",
+															"        \"message\"\r",
+															"    ],\r",
+															"    \"properties\": {\r",
+															"        \"code\": {\r",
+															"            \"$id\": \"#/properties/code\",\r",
+															"            \"type\": \"string\"\r",
+															"        },\r",
+															"        \"message\": {\r",
+															"            \"$id\": \"#/properties/message\",\r",
+															"            \"type\": \"string\"\r",
+															"        }\r",
+															"    },\r",
+															"    \"$id\": \"http://example.org/root.json#\",\r",
+															"    \"type\": \"object\",\r",
+															"    \"definitions\": {},\r",
+															"    \"$schema\": \"http://json-schema.org/draft-07/schema#\"\r",
+															"};\r",
+															" \r",
+															"pm.test('Schema is valid', function() {\r",
+															"    pm.expect(ajv.validate(schema, pm.response.json()), JSON.stringify(ajv.errors)).to.be.true;\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {
+													"accept": true,
+													"content-type": true
+												}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"type": "text",
+														"value": "Bearer {{TOKEN_RP}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"L\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminal001\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"21051520160413\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 2500.00,\r\n  \"first_due_date_only\": false,\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"01\",\r\n    \"number\": \"402143290201\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+												},
+												"url": {
+													"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+													"host": [
+														"{{MGMTSVR}}"
+													],
+													"path": [
+														"v1",
+														"pmc_services",
+														"bank_services",
+														"recurrent_payments"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Alta de PA (con tarjeta) - Con Tarjeta - GLCA",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.sendRequest({\r",
+															"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+															"    method: 'POST',\r",
+															"    header:{\r",
+															"        'content-type': 'application/x-www-form-urlencoded',\r",
+															"    },\r",
+															"    body: {\r",
+															"        mode: 'urlencoded',\r",
+															"        urlencoded: [\r",
+															"            \r",
+															"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+															"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+															"            \r",
+															"        ]\r",
+															"    }\r",
+															"    }, function (err, response) {\r",
+															"                    console.log(response.json());\r",
+															"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+															"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+															"        });"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {
+													"accept": true,
+													"content-type": true
+												}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"type": "text",
+														"value": "Bearer {{TOKEN_RP}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"22000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 999999.99,\r\n  \"first_due_date_only\": true,\r\n  \"email\": \"mail2@mail.com\",\r\n  \"card\": {\r\n    \"number\": \"4540738001897200\",\r\n    \"expiration_date\": \"1126\"\r\n  }\r\n}"
+												},
+												"url": {
+													"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+													"host": [
+														"{{MGMTSVR}}"
+													],
+													"path": [
+														"v1",
+														"pmc_services",
+														"bank_services",
+														"recurrent_payments"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Modificacion de PA (con deuda) - Con Cuenta - GLCA",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.sendRequest({\r",
+															"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+															"    method: 'POST',\r",
+															"    header:{\r",
+															"        'content-type': 'application/x-www-form-urlencoded',\r",
+															"    },\r",
+															"    body: {\r",
+															"        mode: 'urlencoded',\r",
+															"        urlencoded: [\r",
+															"            \r",
+															"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+															"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+															"            \r",
+															"        ]\r",
+															"    }\r",
+															"    }, function (err, response) {\r",
+															"                    console.log(response.json());\r",
+															"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+															"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+															"        });"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {
+													"accept": true,
+													"content-type": true
+												}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"type": "text",
+														"value": "Bearer {{TOKEN_RP}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminal031\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"UPDATE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 500.00,\r\n  \"first_due_date_only\": false,\r\n  \"email\": \"mailNUEVO@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"01\",\r\n    \"number\": \"402143290201\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+												},
+												"url": {
+													"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+													"host": [
+														"{{MGMTSVR}}"
+													],
+													"path": [
+														"v1",
+														"pmc_services",
+														"bank_services",
+														"recurrent_payments"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Modificacion de PA (con tarjeta) - GLCA",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.sendRequest({\r",
+															"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+															"    method: 'POST',\r",
+															"    header:{\r",
+															"        'content-type': 'application/x-www-form-urlencoded',\r",
+															"    },\r",
+															"    body: {\r",
+															"        mode: 'urlencoded',\r",
+															"        urlencoded: [\r",
+															"            \r",
+															"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+															"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+															"            \r",
+															"        ]\r",
+															"    }\r",
+															"    }, function (err, response) {\r",
+															"                    console.log(response.json());\r",
+															"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+															"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+															"        });"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {
+													"accept": true,
+													"content-type": true
+												}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"type": "text",
+														"value": "Bearer {{TOKEN_RP}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminal003\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"UPDATE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 400.00,\r\n  \"first_due_date_only\": true,\r\n  \"email\": \"mail2@mail.com\",\r\n  \"card\": {\r\n    \"number\": \"4540738001897200\",\r\n    \"expiration_date\": \"1126\"\r\n  }\r\n}"
+												},
+												"url": {
+													"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+													"host": [
+														"{{MGMTSVR}}"
+													],
+													"path": [
+														"v1",
+														"pmc_services",
+														"bank_services",
+														"recurrent_payments"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Baja de PA (con deuda) - Con Cuenta - GLCA",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.sendRequest({\r",
+															"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+															"    method: 'POST',\r",
+															"    header:{\r",
+															"        'content-type': 'application/x-www-form-urlencoded',\r",
+															"    },\r",
+															"    body: {\r",
+															"        mode: 'urlencoded',\r",
+															"        urlencoded: [\r",
+															"            \r",
+															"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+															"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+															"            \r",
+															"        ]\r",
+															"    }\r",
+															"    }, function (err, response) {\r",
+															"                    console.log(response.json());\r",
+															"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+															"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+															"        });"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {
+													"accept": true,
+													"content-type": true
+												}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"type": "text",
+														"value": "Bearer {{TOKEN_RP}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.10.92\",\r\n  \"terminal\": \"terminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"DELETE\",\r\n    \"category_id\": \"IEDU\",\r\n    \"company_id\": \"EJ23\",\r\n    \"customer_id\": \"21213\",\r\n    \"additional_data\":null,\r\n    \"amount\":null,\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": null\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 400,\r\n  \"date_from\": null,\r\n  \"date_to\":null,\r\n  \"first_due_date_only\": false,\r\n  \"email\": \"mail@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"01\",\r\n    \"number\": \"402143290201\",\r\n    \"currency\": \"ARS\"\r\n    }\r\n}"
+												},
+												"url": {
+													"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+													"host": [
+														"{{MGMTSVR}}"
+													],
+													"path": [
+														"v1",
+														"pmc_services",
+														"bank_services",
+														"recurrent_payments"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Empresa mixta con deuda",
+									"item": [
+										{
+											"name": "Modificacion de PA (Empresa Mixta con deuda) - Con Cuenta - GLCA",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.sendRequest({\r",
+															"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+															"    method: 'POST',\r",
+															"    header:{\r",
+															"        'content-type': 'application/x-www-form-urlencoded',\r",
+															"    },\r",
+															"    body: {\r",
+															"        mode: 'urlencoded',\r",
+															"        urlencoded: [\r",
+															"            \r",
+															"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+															"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+															"            \r",
+															"        ]\r",
+															"    }\r",
+															"    }, function (err, response) {\r",
+															"                    console.log(response.json());\r",
+															"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+															"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+															"        });"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {
+													"accept": true,
+													"content-type": true
+												}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"type": "text",
+														"value": "Bearer {{TOKEN_RP}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminal006\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"UPDATE\",\r\n    \"category_id\": \"IEDU\",\r\n    \"company_id\": \"EJ23\",\r\n    \"customer_id\": \"00006\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA-A1\"\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 2000.00,\r\n  \"first_due_date_only\": true,\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"01\",\r\n    \"number\": \"402143290201\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+												},
+												"url": {
+													"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+													"host": [
+														"{{MGMTSVR}}"
+													],
+													"path": [
+														"v1",
+														"pmc_services",
+														"bank_services",
+														"recurrent_payments"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Alta de PA (Empresa Mixta con deuda) - Con Cuenta - GLCA Copy",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"pm.sendRequest({\r",
+															"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+															"    method: 'POST',\r",
+															"    header:{\r",
+															"        'content-type': 'application/x-www-form-urlencoded',\r",
+															"    },\r",
+															"    body: {\r",
+															"        mode: 'urlencoded',\r",
+															"        urlencoded: [\r",
+															"            \r",
+															"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+															"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+															"            \r",
+															"        ]\r",
+															"    }\r",
+															"    }, function (err, response) {\r",
+															"                    console.log(response.json());\r",
+															"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+															"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+															"        });"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {
+													"accept": true,
+													"content-type": true
+												}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"type": "text",
+														"value": "Bearer {{TOKEN_RP}}"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"22000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminal006\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"IEDU\",\r\n    \"company_id\": \"EJ23\",\r\n    \"customer_id\": \"00006\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA-A1\"\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 2000.00,\r\n  \"first_due_date_only\": true,\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+												},
+												"url": {
+													"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+													"host": [
+														"{{MGMTSVR}}"
+													],
+													"path": [
+														"v1",
+														"pmc_services",
+														"bank_services",
+														"recurrent_payments"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Alta de PP",
+							"item": [
+								{
+									"name": "Alta de PP (con deuda) - Con Cuenta - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+													"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"M\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminal015\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000114\",\r\n    \"amount\": 0,\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA114\"\r\n  },\r\n  \"recurrent_payment_type\": \"SCHEDULED\",\r\n  \"date_from\": \"2021-04-08T22:26:20.693\",\r\n  \"email\": \"mailnuevo@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Modificacion de PP (con deuda) - Con Cuenta - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+													"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminal015\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"UPDATE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000114\",\r\n    \"amount\": 5500,\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA114\"\r\n  },\r\n  \"recurrent_payment_type\": \"SCHEDULED\",\r\n  \"date_from\": \"2021-05-08T22:26:20.693\",\r\n  \"email\": \"mailnuevo@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"501099240208\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Modificacion de PP (sin deuda) - Con Cuenta - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+													"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"UPDATE\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"11111111\",\r\n    \"amount\": 100,\r\n    \"currency\": \"ARS\"\r\n  },\r\n  \"recurrent_payment_type\": \"SCHEDULED\",\r\n  \"date_from\": \"2021-03-27T22:26:20.693\",\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Baja de PP (con deuda) - Con Cuenta - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+													"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"22000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"DELETE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"amount\": 300,\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  },\r\n  \"recurrent_payment_type\": \"SCHEDULED\",\r\n  \"date_from\": \"2020-11-25T22:26:20.693\",\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"501099240208\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Baja PP (sin deuda) - Con Cuenta - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+													"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"DELETE\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"11111111\",\r\n    \"amount\": 100,\r\n    \"currency\": \"ARS\"\r\n  },\r\n  \"recurrent_payment_type\": \"SCHEDULED\",\r\n  \"date_from\": \"2021-11-05T22:26:20.693Z\",\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Alta de PR",
+							"item": [
+								{
+									"name": "Empresa sin deuda informada",
+									"item": [
+										{
+											"name": "WEEKLY",
+											"item": [
+												{
+													"name": "Alta de PR (sin deuda) - WEEKLY - S/F Finalizacion - Con Cuenta - GLCA",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"exec": [
+																	"pm.sendRequest({\r",
+																	"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+																	"    method: 'POST',\r",
+																	"    header:{\r",
+																	"        'content-type': 'application/x-www-form-urlencoded',\r",
+																	"    },\r",
+																	"    body: {\r",
+																	"        mode: 'urlencoded',\r",
+																	"        urlencoded: [\r",
+																	"            \r",
+																	"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+																	"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+																	"            \r",
+																	"        ]\r",
+																	"    }\r",
+																	"    }, function (err, response) {\r",
+																	"                    console.log(response.json());\r",
+																	"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+																	"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+																	"        });"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"protocolProfileBehavior": {
+														"disabledSystemHeaders": {
+															"accept": true,
+															"content-type": true
+														}
+													},
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"type": "text",
+																"value": "Bearer {{TOKEN_RP}}"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.10.92\",\r\n  \"terminal\": \"terminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"44333333\",\r\n    \"amount\":500,\r\n    \"currency\": \"ARS\"\r\n  },\r\n  \"recurrent_payment_type\": \"WEEKLY\",\r\n  \"date_from\": \"2021-11-05T22:26:20.693Z\",\r\n  \"email\": \"mail@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"01\",\r\n    \"number\": \"402143290201\",\r\n    \"currency\": \"ARS\"\r\n    }\r\n}"
+														},
+														"url": {
+															"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+															"host": [
+																"{{MGMTSVR}}"
+															],
+															"path": [
+																"v1",
+																"pmc_services",
+																"bank_services",
+																"recurrent_payments"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Alta de PR (sin deuda) - WEEKLY - C/F Finalizacion - Con Cuenta - GLCA",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"exec": [
+																	"pm.sendRequest({\r",
+																	"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+																	"    method: 'POST',\r",
+																	"    header:{\r",
+																	"        'content-type': 'application/x-www-form-urlencoded',\r",
+																	"    },\r",
+																	"    body: {\r",
+																	"        mode: 'urlencoded',\r",
+																	"        urlencoded: [\r",
+																	"            \r",
+																	"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+																	"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+																	"            \r",
+																	"        ]\r",
+																	"    }\r",
+																	"    }, function (err, response) {\r",
+																	"                    console.log(response.json());\r",
+																	"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+																	"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+																	"        });"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"protocolProfileBehavior": {
+														"disabledSystemHeaders": {
+															"accept": true,
+															"content-type": true
+														}
+													},
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"type": "text",
+																"value": "Bearer {{TOKEN_RP}}"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"22000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"12213454\",\r\n    \"amount\": 100,\r\n    \"currency\": \"ARS\"\r\n  },\r\n  \"recurrent_payment_type\": \"WEEKLY\",\r\n  \"date_from\": \"2020-11-05T22:26:20.693Z\",\r\n  \"date_to\": \"2020-11-25T22:26:20.693Z\",\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+														},
+														"url": {
+															"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+															"host": [
+																"{{MGMTSVR}}"
+															],
+															"path": [
+																"v1",
+																"pmc_services",
+																"bank_services",
+																"recurrent_payments"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Modificacion PR (sin deuda) - WEEKLY - S/F Finalizacion - Con Cuenta - GLCA",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"exec": [
+																	"pm.sendRequest({\r",
+																	"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+																	"    method: 'POST',\r",
+																	"    header:{\r",
+																	"        'content-type': 'application/x-www-form-urlencoded',\r",
+																	"    },\r",
+																	"    body: {\r",
+																	"        mode: 'urlencoded',\r",
+																	"        urlencoded: [\r",
+																	"            \r",
+																	"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+																	"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+																	"            \r",
+																	"        ]\r",
+																	"    }\r",
+																	"    }, function (err, response) {\r",
+																	"                    console.log(response.json());\r",
+																	"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+																	"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+																	"        });"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"protocolProfileBehavior": {
+														"disabledSystemHeaders": {
+															"accept": true,
+															"content-type": true
+														}
+													},
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"type": "text",
+																"value": "Bearer {{TOKEN_RP}}"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminal017\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"UPDATE\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"22222222\",\r\n    \"amount\": 100,\r\n    \"currency\": \"ARS\"\r\n  },\r\n  \"recurrent_payment_type\": \"WEEKLY\",\r\n  \"date_from\": \"2021-03-22T22:26:20.693Z\",\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+														},
+														"url": {
+															"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+															"host": [
+																"{{MGMTSVR}}"
+															],
+															"path": [
+																"v1",
+																"pmc_services",
+																"bank_services",
+																"recurrent_payments"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Modificacion PR (sin deuda) - WEEKLY - C/F Finalizacion - Con Cuenta - GLCA",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"exec": [
+																	"pm.sendRequest({\r",
+																	"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+																	"    method: 'POST',\r",
+																	"    header:{\r",
+																	"        'content-type': 'application/x-www-form-urlencoded',\r",
+																	"    },\r",
+																	"    body: {\r",
+																	"        mode: 'urlencoded',\r",
+																	"        urlencoded: [\r",
+																	"            \r",
+																	"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+																	"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+																	"            \r",
+																	"        ]\r",
+																	"    }\r",
+																	"    }, function (err, response) {\r",
+																	"                    console.log(response.json());\r",
+																	"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+																	"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+																	"        });"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"protocolProfileBehavior": {
+														"disabledSystemHeaders": {
+															"accept": true,
+															"content-type": true
+														}
+													},
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"type": "text",
+																"value": "Bearer {{TOKEN_RP}}"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminal017\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"UPDATE\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"22222222\",\r\n    \"amount\": 100,\r\n    \"currency\": \"ARS\"\r\n  },\r\n  \"recurrent_payment_type\": \"WEEKLY\",\r\n  \"date_from\": \"2021-03-05T22:26:20.693Z\",\r\n  \"date_to\": \"2021-11-25T22:26:20.693Z\",\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+														},
+														"url": {
+															"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+															"host": [
+																"{{MGMTSVR}}"
+															],
+															"path": [
+																"v1",
+																"pmc_services",
+																"bank_services",
+																"recurrent_payments"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Modificacion PR (sin deuda) - MONTHLY - C/F Finalizacion - Con Cuenta - GLCA",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"exec": [
+																	"pm.sendRequest({\r",
+																	"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+																	"    method: 'POST',\r",
+																	"    header:{\r",
+																	"        'content-type': 'application/x-www-form-urlencoded',\r",
+																	"    },\r",
+																	"    body: {\r",
+																	"        mode: 'urlencoded',\r",
+																	"        urlencoded: [\r",
+																	"            \r",
+																	"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+																	"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+																	"            \r",
+																	"        ]\r",
+																	"    }\r",
+																	"    }, function (err, response) {\r",
+																	"                    console.log(response.json());\r",
+																	"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+																	"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+																	"        });"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"protocolProfileBehavior": {
+														"disabledSystemHeaders": {
+															"accept": true,
+															"content-type": true
+														}
+													},
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"type": "text",
+																"value": "Bearer {{TOKEN_RP}}"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminal018\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"UPDATE\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"55555555\",\r\n    \"amount\": 100,\r\n    \"currency\": \"ARS\"\r\n  },\r\n  \"recurrent_payment_type\": \"MONTHLY\",\r\n  \"date_from\": \"2021-11-05T22:26:20.693Z\",\r\n  \"date_to\": \"2021-11-25T22:26:20.693Z\",\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"01\",\r\n    \"number\": \"402143290201\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+														},
+														"url": {
+															"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+															"host": [
+																"{{MGMTSVR}}"
+															],
+															"path": [
+																"v1",
+																"pmc_services",
+																"bank_services",
+																"recurrent_payments"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Baja PR (sin deuda) - WEEKLY - C/F Finalizacion - Con Cuenta - GLCA",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"exec": [
+																	"pm.sendRequest({\r",
+																	"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+																	"    method: 'POST',\r",
+																	"    header:{\r",
+																	"        'content-type': 'application/x-www-form-urlencoded',\r",
+																	"    },\r",
+																	"    body: {\r",
+																	"        mode: 'urlencoded',\r",
+																	"        urlencoded: [\r",
+																	"            \r",
+																	"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+																	"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+																	"            \r",
+																	"        ]\r",
+																	"    }\r",
+																	"    }, function (err, response) {\r",
+																	"                    console.log(response.json());\r",
+																	"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+																	"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+																	"        });"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"protocolProfileBehavior": {
+														"disabledSystemHeaders": {
+															"accept": true,
+															"content-type": true
+														}
+													},
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"type": "text",
+																"value": "Bearer {{TOKEN_RP}}"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"22000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"DELETE\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"33333333\",\r\n    \"amount\": 100,\r\n    \"currency\": \"ARS\"\r\n  },\r\n  \"recurrent_payment_type\": \"WEEKLY\",\r\n  \"date_from\": \"2021-11-05T22:26:20.693Z\",\r\n  \"date_to\": \"2021-12-05T22:26:20.693Z\",\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+														},
+														"url": {
+															"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+															"host": [
+																"{{MGMTSVR}}"
+															],
+															"path": [
+																"v1",
+																"pmc_services",
+																"bank_services",
+																"recurrent_payments"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "MONTHLY",
+											"item": [
+												{
+													"name": "Alta de PR (sin deuda) - MONTHLY- S/F Finalizacion - Con Cuenta - GLCA",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"exec": [
+																	"pm.sendRequest({\r",
+																	"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+																	"    method: 'POST',\r",
+																	"    header:{\r",
+																	"        'content-type': 'application/x-www-form-urlencoded',\r",
+																	"    },\r",
+																	"    body: {\r",
+																	"        mode: 'urlencoded',\r",
+																	"        urlencoded: [\r",
+																	"            \r",
+																	"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+																	"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+																	"            \r",
+																	"        ]\r",
+																	"    }\r",
+																	"    }, function (err, response) {\r",
+																	"                    console.log(response.json());\r",
+																	"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+																	"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+																	"        });"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"protocolProfileBehavior": {
+														"disabledSystemHeaders": {
+															"accept": true,
+															"content-type": true
+														}
+													},
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"type": "text",
+																"value": "Bearer {{TOKEN_RP}}"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"65555555\",\r\n    \"amount\": 300,\r\n    \"currency\": \"ARS\"\r\n  },\r\n  \"recurrent_payment_type\": \"MONTHLY\",\r\n  \"date_from\": \"2020-12-04T22:26:20.693Z\",\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+														},
+														"url": {
+															"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+															"host": [
+																"{{MGMTSVR}}"
+															],
+															"path": [
+																"v1",
+																"pmc_services",
+																"bank_services",
+																"recurrent_payments"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Alta de PR (sin deuda) - MONTHLY- C/F Finalizacion - Con Cuenta - GLCA",
+													"event": [
+														{
+															"listen": "prerequest",
+															"script": {
+																"exec": [
+																	"pm.sendRequest({\r",
+																	"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+																	"    method: 'POST',\r",
+																	"    header:{\r",
+																	"        'content-type': 'application/x-www-form-urlencoded',\r",
+																	"    },\r",
+																	"    body: {\r",
+																	"        mode: 'urlencoded',\r",
+																	"        urlencoded: [\r",
+																	"            \r",
+																	"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+																	"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+																	"            \r",
+																	"        ]\r",
+																	"    }\r",
+																	"    }, function (err, response) {\r",
+																	"                    console.log(response.json());\r",
+																	"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+																	"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+																	"        });"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"protocolProfileBehavior": {
+														"disabledSystemHeaders": {
+															"accept": true,
+															"content-type": true
+														}
+													},
+													"request": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Accept",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Content-Type",
+																"type": "text",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"type": "text",
+																"value": "Bearer {{TOKEN_RP}}"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"22000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"teminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"12213454\",\r\n    \"amount\": 100,\r\n    \"currency\": \"ARS\"\r\n  },\r\n  \"recurrent_payment_type\": \"MONTHLY\",\r\n  \"date_from\": \"2020-11-05T22:26:20.693Z\",\r\n  \"date_to\": \"2020-11-25T22:26:20.693Z\",\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+														},
+														"url": {
+															"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+															"host": [
+																"{{MGMTSVR}}"
+															],
+															"path": [
+																"v1",
+																"pmc_services",
+																"bank_services",
+																"recurrent_payments"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Consulta de deudas y adhesiones de PA Copy",
+							"item": [
+								{
+									"name": "Consulta de deudas y adhesiones de PA - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+													"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\"\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments_debts_details",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments_debts_details"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Consulta de últimos Pagos Automáticos",
+							"item": [
+								{
+									"name": "Consulta de últimos Pagos Automáticos - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+													"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"21022615302984\"\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments_details",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments_details"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Stop Debit",
+							"item": [
+								{
+									"name": "Stop Debit de PA (con deuda) - Con Cuenta - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+													"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.26\",\r\n  \"terminal\": \"terminal020\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"campoPrueba\":null,\r\n  \"stop_debit_type\": {\r\n    \"type\": \"cancel\",\r\n    \"due_date\": \"2022-03-19T13:55:34.415Z\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/stop_debit",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"stop_debit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Cancel Stop Debit de PA (con deuda) - Con Cuenta - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+													"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminal020\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"stop_debit_type\": {\r\n    \"type\": \"CANCEL\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/stop_debit",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"stop_debit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Stop Debit de PR (sin deuda) - Con Cuenta - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+													"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminal008\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"stop_debit_type\": {\r\n    \"type\": \"apply\",\r\n    \"due_date\": \"2021-03-03T13:55:34.415Z\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"22222222\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/stop_debit",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"stop_debit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Cancel Stop Debit de PR (sin deuda) - Con Cuenta - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+													"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminal017\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"stop_debit_type\": {\r\n    \"type\": \"cancel\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"22222222\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/stop_debit",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"stop_debit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Stop Debit de PP (sin deuda) - Con Cuenta - GLCA",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"twDbrnydHR9kUWjSUy5pplhjeYiWQ281\"},\r",
+													"                {key: \"client_secret\", value:\"3V9PBZciAoG9PNEn\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });\r",
+													"\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"23000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"stop_debit_type\": {\r\n    \"type\": \"apply\",\r\n    \"due_date\": \"2021-03-05T13:55:34.415Z\",\r\n    \"category_id\": \"DNCS\",\r\n    \"company_id\": \"UNCF\",\r\n    \"customer_id\": \"12121212\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/stop_debit",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"stop_debit"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "AUTOM",
+							"item": [
+								{
+									"name": "FIXERGeneral - AUTOM",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (data.status === 200)\r",
+													"{\r",
+													"\r",
+													"const responseJson = pm.response.json();\r",
+													"//pm.test(\"Validacion de codigo de respuesta y mensaje\")\r",
+													"pm.test(data.nombre_caso, function() {\r",
+													"   pm.response.to.have.status(200);\r",
+													"   pm.expect(pm.response.text()).to.include(data.body_response);\r",
+													"})\r",
+													"\r",
+													"}else\r",
+													"    if (data.status === 400)\r",
+													"    {\r",
+													"\r",
+													"    const responseJson = pm.response.json();\r",
+													"    //pm.test(\"Validacion de codigo de respuesta y mensaje\")\r",
+													"    pm.test(data.nombre_caso, function() {\r",
+													"        pm.response.to.have.status(400);\r",
+													"        pm.expect(pm.response.text()).to.include(data.body_response);\r",
+													"})\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"solicitud\":\"{{operacion}};idCliente={{idCliente}};fiid={{fiid}};idFactura={{idFactura}};changeAttr=fechaDePago:{{fechaDePago}};vto1={{vto1}};vto2={{vto2}};vto3={{vto3}};importe1={{importe1}};importe2={{importe2}};importe3={{importe3}};tipoDoc={{tipoDoc}};nroDoc={{nroDoc}}\"          \r\n}\r\n"
+										},
+										"url": {
+											"raw": "http://wapp-ttpm215:8085/restBr/services/fixer/exe",
+											"protocol": "http",
+											"host": [
+												"wapp-ttpm215"
+											],
+											"port": "8085",
+											"path": [
+												"restBr",
+												"services",
+												"fixer",
+												"exe"
+											]
+										},
+										"description": "Mostrar Factura del FDBF"
+									},
+									"response": [
+										{
+											"name": "getUdf",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"solicitud\":\"getUdf;fiid=BSTN;tipoDoc=1;nroDoc=30000001\"          \r\n}\r\n"
+												},
+												"url": {
+													"raw": "http://wapp-ttpm215:8085/restBr/services/fixer/exe",
+													"protocol": "http",
+													"host": [
+														"wapp-ttpm215"
+													],
+													"port": "8085",
+													"path": [
+														"restBr",
+														"services",
+														"fixer",
+														"exe"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json;charset=utf-8"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												},
+												{
+													"key": "Date",
+													"value": "Tue, 04 Jun 2019 15:53:30 GMT"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"_numConversionErrors\": 0,\n    \"_allowErrors\": true,\n    \"_errorDetail\": {},\n    \"_bufferLen\": 1176,\n    \"base_seg_lgth\": 782,\n    \"left_word\": -16384,\n    \"right_word\": 0,\n    \"seg_map\": -1073741824,\n    \"fiid\": \"BSTN\",\n    \"tip_doc1\": \"1\",\n    \"num_doc1\": \"30000001    \",\n    \"hmbk\": \"N\",\n    \"pmctas\": \"S\",\n    \"wap\": \"N\",\n    \"mobile\": \"S\",\n    \"afip\": \"N\",\n    \"sites\": \"N\",\n    \"clave_trans\": \"S\",\n    \"clave_pmctas\": \"S\",\n    \"cant_gen_forz\": \"0\",\n    \"tranf_ult_trans\": \"N\",\n    \"cod_resp\": \"  \",\n    \"bad_pin_cel\": \"0\",\n    \"sxv_otr_mob\": \"N\",\n    \"inv_online\": \" \",\n    \"respuesta\": \"15\",\n    \"prefijo_cuit\": \"  \",\n    \"digito_verif_cuit\": \" \",\n    \"posee_tarj_cord\": \"N\",\n    \"ing_err_tcoor\": 0,\n    \"cve_vigm\": \"N\",\n    \"emp_telef\": \"4\",\n    \"sxv_mobile\": \"S\",\n    \"cve_offst\": \"0076971497630442\",\n    \"cve_offst2\": \"7836123516158881\",\n    \"cve_vig\": \"S\",\n    \"camb_anio\": \"2019\",\n    \"camb_mes\": \"5\",\n    \"camb_dia\": \"30\",\n    \"perfil_udf\": \"U0\",\n    \"tran_seq_num\": \"000000000000\",\n    \"bad_pin_tries\": 0,\n    \"dat_nom\": \"USER TEST                     \",\n    \"usr_mobile\": \"F8C0347145\",\n    \"transf_ib\": \"S\",\n    \"estado_usuario\": \"H\",\n    \"cant_prec\": 0,\n    \"acepta_tc\": \" \",\n    \"perfil_mobile\": \"F\",\n    \"token_sms\": \" \",\n    \"tipo_usuario\": \" \",\n    \"dat_anio_nac\": \"1980\",\n    \"dat_mes_nac\": \"12\",\n    \"dat_dia_nac\": \"22\",\n    \"dat_dir_email\": \"amartinez@prismamp.com                                           \",\n    \"dat_sex\": \"1\",\n    \"num_celular\": \"1161994344\",\n    \"ult_acceso_hbk\": [\n        28,\n        3767,\n        29019\n    ],\n    \"ult_acceso_pmc\": [\n        32,\n        28498,\n        15781\n    ],\n    \"first_used_anio\": \"2013\",\n    \"first_used_mes\": \"10\",\n    \"first_used_dia\": \"11\",\n    \"fe_ult_anio\": \"2019\",\n    \"fe_ult_mes\": \"5\",\n    \"fe_ult_dia\": \"30\",\n    \"fe_alt_anio\": \"2012\",\n    \"fe_alt_mes\": \"10\",\n    \"fe_alt_dia\": \"12\",\n    \"cant_uso\": \"0\",\n    \"lim_uso\": \"999\",\n    \"fm_timestamp\": [\n        31,\n        -4562,\n        -10709\n    ],\n    \"fm_user_grp\": 255,\n    \"fm_user_num\": 255,\n    \"updt_typ\": \"C\",\n    \"sta_num\": \"    \",\n    \"fill1\": \" \",\n    \"lt_timestamp\": [\n        32,\n        -24210,\n        26019\n    ],\n    \"nonstop_id\": 0,\n    \"pro_num\": 4095,\n    \"cant_tarj\": 2,\n    \"tarj\": [\n        {\n            \"tip_tar\": \"E \",\n            \"num_tar\": \"4517510000046525   \",\n            \"total_ctas\": \"4\",\n            \"categoria\": \"1\",\n            \"indicador_pmc\": \"S\",\n            \"crd_stat\": \"1\"\n        },\n        {\n            \"tip_tar\": \"E \",\n            \"num_tar\": \"4517510000046552   \",\n            \"total_ctas\": \"1\",\n            \"categoria\": \"1\",\n            \"indicador_pmc\": \"S\",\n            \"crd_stat\": \"1\"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        },\n        {\n            \"tip_tar\": \"  \",\n            \"num_tar\": \"                   \",\n            \"total_ctas\": \"0\",\n            \"categoria\": \" \",\n            \"indicador_pmc\": \" \",\n            \"crd_stat\": \" \"\n        }\n    ],\n    \"fe_ult_cbio_anio\": \"19\",\n    \"fe_ult_cbio_mes\": \"05\",\n    \"fe_ult_cbio_dia\": \"31\",\n    \"fecha_ult_sesion_mob\": [\n        32,\n        -24473,\n        9549\n    ],\n    \"cant_err_df_mob\": 0,\n    \"tipo_login\": \"U\",\n    \"tiene_t_cred\": \" \",\n    \"tiene_tc_master\": \"N\",\n    \"tiene_tc_amex\": \"S\",\n    \"sin_uso_5\": \"        \",\n    \"cod_ult_tran\": \"82\",\n    \"fecha_visa\": \"      \",\n    \"sxvmail_adhered\": \"S\",\n    \"mail_otr_info\": \"S\",\n    \"ingreso_pmctas\": \"S\",\n    \"nickname_atm\": \"EEF9D60D3080    \",\n    \"nickname_usr\": \"                \",\n    \"tipo_generacion_clave\": \" \",\n    \"w_fecha_cambio_perfil\": \"000000\",\n    \"fe_cperfil_anio\": \"00\",\n    \"fe_cperfil_mes\": \"00\",\n    \"fe_cperfil_dia\": \"00\",\n    \"metodo_ult_val\": \"0\",\n    \"sin_uso\": \"00000\",\n    \"fe_pmailer_anio\": \"00\",\n    \"fe_pmailer_mes\": \"00\",\n    \"fe_pmailer_dia\": \"00\",\n    \"seg_lgth_lgth\": 394,\n    \"id\": 0,\n    \"b24_rsrvd\": 0,\n    \"cant_ctas\": 5,\n    \"ctas\": [\n        {\n            \"tip_cta\": \"01\",\n            \"num_cta\": \"00000000001190     \",\n            \"ind_tar\": \"1\",\n            \"origen\": \"0\"\n        },\n        {\n            \"tip_cta\": \"11\",\n            \"num_cta\": \"05010100082414     \",\n            \"ind_tar\": \"1\",\n            \"origen\": \"0\"\n        },\n        {\n            \"tip_cta\": \"11\",\n            \"num_cta\": \"159875368420       \",\n            \"ind_tar\": \"2\",\n            \"origen\": \"0\"\n        },\n        {\n            \"tip_cta\": \"11\",\n            \"num_cta\": \"05010100082415     \",\n            \"ind_tar\": \"1\",\n            \"origen\": \"0\"\n        },\n        {\n            \"tip_cta\": \"11\",\n            \"num_cta\": \"6916299602         \",\n            \"ind_tar\": \"1\",\n            \"origen\": \"0\"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        },\n        {\n            \"tip_cta\": \"  \",\n            \"num_cta\": \"                   \",\n            \"ind_tar\": \"0\",\n            \"origen\": \" \"\n        }\n    ]\n}"
+										}
+									]
+								},
+								{
+									"name": "Subscriptions - Usuarios (Bancos) - AUTOM",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"vBmpj3kgIynmfEiGm1ViGdlgtyN6cT7R\"},\r",
+													"                {key: \"client_secret\", value:\"iGCqnBZer0qnEiUi\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"DELEGACION\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{DELEGACION}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"consumer_id\": {{consumer_id}},\n  \"document_type\": {{document_type}},\n  \"document_number\": {{document_number}},\n  \"channel\": {{channel}},\n  \"ip_address\": {{ip_address}},\n  \"timestamp\": {{timestamp}},\n  \"origin\": {{origin}},\n  \"company_id\": {{subscription.company_id}},\n  \"client_id\": {{subscription.customer_id}},\n  \"subscription_type\":{{subscription_type}},\n  \"description\":{{description}}\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/core_services/subscriptions",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"core_services",
+												"subscriptions"
+											]
+										},
+										"description": "Post Subscriptions - Usuarios"
+									},
+									"response": []
+								},
+								{
+									"name": "ABM de PA (Con Cuenta) -  Autom - Con Access Token",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (data.TipoCaso === \"C\" || data.TipoCaso === \"T\" )\r",
+													"{\r",
+													"\r",
+													"if (data.status === 400 || data.status === 200)\r",
+													"{\r",
+													"const responseJson = pm.response.json();\r",
+													"//pm.test(\"Validacion de codigo de respuesta y mensaje\")\r",
+													"pm.test(data.nombre_caso, function() {\r",
+													"    pm.expect(responseJson.code).to.equal(data.cod_rta);\r",
+													"    pm.expect(responseJson.message).to.equal(data.mensaje_rta);\r",
+													"})  \r",
+													"\r",
+													"}else\r",
+													"        if (data.status === 500)\r",
+													"        {\r",
+													"\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        }else\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        \r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// obtencion de access token\r",
+													"if (data.token === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+													"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"\r",
+													"//fin obtencion access token\r",
+													"\r",
+													"/////////////////////////////////////////////\r",
+													"\r",
+													"//logica para correr el fixer\r",
+													"\r",
+													"if (data.flag === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'http://wapp-ttpm215:8085/restBr/services/fixer/exe',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/json',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\"solicitud\":\"setFdbfFactura;idCliente={{{{data.idCliente}}}};fiid={{{{data.fiid}}}};idFactura={{{{data.idFactura}}}};changeAttr=fechaDePago:{{{{data.fechaDePago}}}}\"})\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"// fin logica fixer\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"consumer_id\": {{consumer_id}},\n  \"document_type\": {{document_type}},\n  \"document_number\": {{document_number}},\n  \"channel\": {{channel}},\n  \"ip_address\": {{ip_address}},\n  \"terminal\": {{terminal}},\n  \"origin\": {{origin}},\n  \"timestamp\": {{timestamp}},\n  \"subscription\": {\n    \"type\": {{subscriptionType}},\n    \"category_id\": {{subscriptionCategory_id}},\n    \"company_id\": {{subscriptionCompany_id}},\n    \"customer_id\": {{subscriptionCustomer_id}},\n    \"additional_data\":{{subscriptionAdditional_data}},\n    \"amount\":{{subscriptionAmount}},\n    \"currency\": {{subscriptionCurrency}},\n    \"invoice_id\": {{subscriptionInvoice_id}}\n  },\n  \"recurrent_payment_type\": {{recurrent_payment_type}},\n  \"max_amount\": {{max_amount}},\n  \"date_from\": {{date_from}},\n  \"date_to\":{{date_to}},\n  \"first_due_date_only\": {{first_due_date_only}},\n  \"email\": {{email}},\n  \"account\": {\n    \"type\": {{accountType}},\n    \"number\": {{accountNumber}},\n    \"currency\": {{accountCurrency}}\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments"
+											]
+										},
+										"description": "Post Login - Usuarios"
+									},
+									"response": []
+								},
+								{
+									"name": "ALL PA (Con Cuenta) -  Autom - Con Access Token",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (data.TipoCaso === \"C\" || data.TipoCaso === \"T\" )\r",
+													"{\r",
+													"\r",
+													"if (data.status === 400 || data.status === 200)\r",
+													"{\r",
+													"const responseJson = pm.response.json();\r",
+													"//pm.test(\"Validacion de codigo de respuesta y mensaje\")\r",
+													"pm.test(data.nombre_caso, function() {\r",
+													"    pm.expect(responseJson.code).to.equal(data.cod_rta);\r",
+													"    pm.expect(responseJson.message).to.equal(data.mensaje_rta);\r",
+													"})  \r",
+													"\r",
+													"}else\r",
+													"        if (data.status === 500)\r",
+													"        {\r",
+													"\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        }else\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        \r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// obtencion de access token\r",
+													"if (data.token === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+													"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"                    pm.globals.set(\"operacion\", data.operacion);\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"\r",
+													"//fin obtencion access token\r",
+													"\r",
+													"/////////////////////////////////////////////\r",
+													"\r",
+													"//logica para correr el fixer\r",
+													"\r",
+													"if (data.flag === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'http://wapp-ttpm215:8085/restBr/services/fixer/exe',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/json',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\"solicitud\":\"setFdbfFactura;idCliente={{{{data.idCliente}}}};fiid={{{{data.fiid}}}};idFactura={{{{data.idFactura}}}};changeAttr=fechaDePago:{{{{data.fechaDePago}}}}\"})\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"// fin logica fixer\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n \n  \"subscription\": {\n    \"type\": {{subscriptionType}},\n    \"category_id\": {{subscriptionCategory_id}},\n    \"company_id\": {{subscriptionCompany_id}},\n    \"customer_id\": {{subscriptionCustomer_id}},\n    \"additional_data\":{{subscriptionAdditional_data}},\n    \"amount\":{{subscriptionAmount}},\n    \"currency\": {{subscriptionCurrency}},\n    \"invoice_id\": {{subscriptionInvoice_id}}\n  },\n\n\"stop_debit_type\": {\n    \"type\": {{stopDebit.type}},\n    \"due_date\": {{stopDebit.dueDate}},\n    \"category_id\": {{stopDebit.categoryID}},\n    \"company_id\": {{stopDebit.companyID}},\n    \"customer_id\": {{stopDebit.customerID}},\n    \"currency\": {{stopDebit.currency}},\n    \"invoice_id\": {{stopDebit.invoiceID}}\n  },\n\n  \"recurrent_payment_type\": {{recurrent_payment_type}},\n  \"max_amount\": {{max_amount}},\n  \"date_from\": {{date_from}},\n  \"date_to\":{{date_to}},\n  \"first_due_date_only\": {{first_due_date_only}},\n  \"email\": {{email}},\n  \"account\": {\n    \"type\": {{accountType}},\n    \"number\": {{accountNumber}},\n    \"currency\": {{accountCurrency}}\n    },\n\n  \"consumer_id\": {{consumer_id}},\n  \"document_type\": {{document_type}},\n  \"document_number\": {{document_number}},\n  \"channel\": {{channel}},\n  \"ip_address\": {{ip_address}},\n  \"terminal\": {{terminal}},\n  \"origin\": {{origin}},\n  \"timestamp\": {{timestamp}}\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/{{operacion}}",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"{{operacion}}"
+											]
+										},
+										"description": "Post Login - Usuarios"
+									},
+									"response": []
+								},
+								{
+									"name": "ABM de PA (Con Cuenta) -  Autom - Con Access Token LEGADA",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (data.TipoCaso === \"C\")\r",
+													"{\r",
+													"\r",
+													"if (data.status === 400 || data.status === 200)\r",
+													"{\r",
+													"const responseJson = pm.response.json();\r",
+													"//pm.test(\"Validacion de codigo de respuesta y mensaje\")\r",
+													"pm.test(data.nombre_caso, function() {\r",
+													"    pm.expect(responseJson.code).to.equal(data.cod_rta);\r",
+													"    pm.expect(responseJson.message).to.equal(data.mensaje_rta);\r",
+													"})  \r",
+													"\r",
+													"}else\r",
+													"        if (data.status === 500)\r",
+													"        {\r",
+													"\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        }else\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        \r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// obtencion de access token\r",
+													"if (data.token === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+													"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"\r",
+													"//fin obtencion access token\r",
+													"\r",
+													"/////////////////////////////////////////////\r",
+													"\r",
+													"//logica para correr el fixer\r",
+													"\r",
+													"if (data.flag === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'http://wapp-ttpm215:8085/restBr/services/fixer/exe',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/json',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\"solicitud\":\"setFdbfFactura;idCliente={{{{data.idCliente}}}};fiid={{{{data.fiid}}}};idFactura={{{{data.idFactura}}}};changeAttr=fechaDePago:{{{{data.fechaDePago}}}}\"})\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"// fin logica fixer\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"consumer_id\": {{consumer_id}},\n  \"document_type\": {{document_type}},\n  \"document_number\": {{document_number}},\n  \"channel\": {{channel}},\n  \"ip_address\": {{ip_address}},\n  \"terminal\": {{terminal}},\n  \"origin\": {{origin}},\n  \"timestamp\": {{timestamp}},\n  \"subscription\": {\n    \"type\": {{subscriptionType}},\n    \"category_id\": {{subscriptionCategory_id}},\n    \"company_id\": {{subscriptionCompany_id}},\n    \"customer_id\": {{subscriptionCustomer_id}},\n    \"additional_data\":{{subscriptionAdditional_data}},\n    \"amount\":{{subscriptionAmount}},\n    \"currency\": {{subscriptionCurrency}},\n    \"invoice_id\": {{subscriptionInvoice_id}}\n  },\n  \"recurrent_payment_type\": {{recurrent_payment_type}},\n  \"max_amount\": {{max_amount}},\n  \"date_from\": {{date_from}},\n  \"date_to\":{{date_to}},\n  \"first_due_date_only\": {{first_due_date_only}},\n  \"email\": {{email}},\n  \"account\": {\n    \"type\": {{accountType}},\n    \"number\": {{accountNumber}},\n    \"currency\": {{accountCurrency}}\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://192.168.76.34:8080/pagosautomaticos-api/internal/v1/recurrent_payments",
+											"protocol": "http",
+											"host": [
+												"192",
+												"168",
+												"76",
+												"34"
+											],
+											"port": "8080",
+											"path": [
+												"pagosautomaticos-api",
+												"internal",
+												"v1",
+												"recurrent_payments"
+											]
+										},
+										"description": "Post Login - Usuarios"
+									},
+									"response": []
+								},
+								{
+									"name": "ABM de PA (Con Cuenta) -  Autom - Con Access Token Copy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (data.TipoCaso === \"C\")\r",
+													"{\r",
+													"\r",
+													"if (data.status === 400 || data.status === 200)\r",
+													"{\r",
+													"const responseJson = pm.response.json();\r",
+													"//pm.test(\"Validacion de codigo de respuesta y mensaje\")\r",
+													"pm.test(data.nombre_caso, function() {\r",
+													"    pm.expect(responseJson.code).to.equal(data.cod_rta);\r",
+													"    pm.expect(responseJson.message).to.equal(data.mensaje_rta);\r",
+													"})  \r",
+													"\r",
+													"}else\r",
+													"        if (data.status === 500)\r",
+													"        {\r",
+													"\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        }else\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        \r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// obtencion de access token\r",
+													"if (data.token === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+													"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"\r",
+													"//fin obtencion access token\r",
+													"\r",
+													"/////////////////////////////////////////////\r",
+													"\r",
+													"//logica para correr el fixer\r",
+													"\r",
+													"if (data.flag === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'http://wapp-ttpm215:8085/restBr/services/fixer/exe',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/json',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\"solicitud\":\"setFdbfFactura;idCliente={{{{data.idCliente}}}};fiid={{{{data.fiid}}}};idFactura={{{{data.idFactura}}}};changeAttr=fechaDePago:{{{{data.fechaDePago}}}}\"})\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"// fin logica fixer\r",
+													"\r",
+													"///////////////////////////////////////////\r",
+													"\r",
+													"//ejecucion de baja de PA\r",
+													"const dominio = 'https://api-qa.prismamediosdepago.com';\r",
+													"//var AccessToken = pm.environment.get(TOKEN_RP);\r",
+													"var Consumer_id = data.consumer_id;\r",
+													"var Document_type = data.document_type;\r",
+													"var Document_number = data.document_number;\r",
+													"var Channel = data.channel;\r",
+													"var Ip_address = data.ip_address;\r",
+													"var Terminal = data.terminal;\r",
+													"var Origin = data.origin;\r",
+													"var Timestamp = data.timestamp;\r",
+													"\r",
+													"var SubscriptionType = data.subscriptionType;\r",
+													"var SubscriptionCategory_id = data.subscriptionCategory_id;\r",
+													"var SubscriptionCompany_id = data.subscriptionCompany_id;\r",
+													"var SubscriptionCustomer_id = data.subscriptionCustomer_id;\r",
+													"var SubscriptionAdditional_data = data.subscriptionAdditional_data;\r",
+													"var SubscriptionAmount = data.subscriptionAmount;\r",
+													"var SubscriptionCurrency = data.subscriptionCurrency;\r",
+													"var SubscriptionInvoice_id = data.subscriptionInvoice_id;\r",
+													"\r",
+													"var Recurrent_payment_type = data.recurrent_payment_type;\r",
+													"var Max_amount = data.max_amount;\r",
+													"var Date_from = data.date_from;\r",
+													"var Date_to = data.date_to;\r",
+													"var First_due_date_only = data.first_due_date_only;\r",
+													"var Email = data.email;\r",
+													"var AccountType = data.accountType;\r",
+													"var AccountNumber = data.accountNumber;\r",
+													"var AccountCurrency = data.accountCurrency;\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: dominio+'/v1/pmc_services/bank_services/recurrent_payments',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/json',\r",
+													"        'Authorization': 'Bearer 0jGWpRoF4wmSd9SppbMGagIPc5oR',\r",
+													"        //'Authorization': pm.environment.get(AccessToken),\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify(\r",
+													"  {\r",
+													"  consumer_id: pm.environment.get(Consumer_id),\r",
+													"  document_type: pm.environment.get(Document_type),\r",
+													"  document_number: pm.environment.get(Document_number),\r",
+													"  channel: pm.environment.get(Channel),\r",
+													"  ip_address: pm.environment.get(Ip_address),\r",
+													"  terminal: pm.environment.get(Terminal),\r",
+													"  origin: pm.environment.get(Origin),\r",
+													"  timestamp: pm.environment.get(Timestamp),\r",
+													"  subscription: {\r",
+													"    type: pm.environment.get(SubscriptionType),\r",
+													"    category_id: pm.environment.get(SubscriptionCategory_id),\r",
+													"    company_id: pm.environment.get(SubscriptionCompany_id),\r",
+													"    customer_id: pm.environment.get(SubscriptionCustomer_id),\r",
+													"    additional_data: pm.environment.get(SubscriptionAdditional_data),\r",
+													"    amount: pm.environment.get(SubscriptionAmount),\r",
+													"    currency: pm.environment.get(SubscriptionCurrency),\r",
+													"    invoice_id: pm.environment.get(SubscriptionInvoice_id)\r",
+													"  },\r",
+													"  recurrent_payment_type: pm.environment.get(Recurrent_payment_type),\r",
+													"  max_amount: pm.environment.get(Max_amount),\r",
+													"  date_from: pm.environment.get(Date_from),\r",
+													"  date_to: pm.environment.get(Date_to),\r",
+													"  first_due_date_only: pm.environment.get(First_due_date_only),\r",
+													"  email: pm.environment.get(Email),\r",
+													"  account: {\r",
+													"    type: pm.environment.get(AccountType),\r",
+													"    number: pm.environment.get(AccountNumber),\r",
+													"    currency: pm.environment.get(AccountCurrency)\r",
+													"    }\r",
+													"}\r",
+													")\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"        });\r",
+													"//FIN ejecucion de baja de PA\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"consumer_id\": {{consumer_id}},\n  \"document_type\": {{document_type}},\n  \"document_number\": {{document_number}},\n  \"channel\": {{channel}},\n  \"ip_address\": {{ip_address}},\n  \"terminal\": {{terminal}},\n  \"origin\": {{origin}},\n  \"timestamp\": {{timestamp}},\n  \"subscription\": {\n    \"type\": {{subscriptionType}},\n    \"category_id\": {{subscriptionCategory_id}},\n    \"company_id\": {{subscriptionCompany_id}},\n    \"customer_id\": {{subscriptionCustomer_id}},\n    \"additional_data\":{{subscriptionAdditional_data}},\n    \"amount\":{{subscriptionAmount}},\n    \"currency\": {{subscriptionCurrency}},\n    \"invoice_id\": {{subscriptionInvoice_id}}\n  },\n  \"recurrent_payment_type\": {{recurrent_payment_type}},\n  \"max_amount\": {{max_amount}},\n  \"date_from\": {{date_from}},\n  \"date_to\":{{date_to}},\n  \"first_due_date_only\": {{first_due_date_only}},\n  \"email\": {{email}},\n  \"account\": {\n    \"type\": {{accountType}},\n    \"number\": {{accountNumber}},\n    \"currency\": {{accountCurrency}}\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments"
+											]
+										},
+										"description": "Post Login - Usuarios"
+									},
+									"response": []
+								},
+								{
+									"name": "ABM de PA (Con Tarjeta) -  Autom - Con Access Token",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (data.TipoCaso === \"T\")\r",
+													"{\r",
+													"\r",
+													"if (data.status === 400 || data.status === 200)\r",
+													"{\r",
+													"const responseJson = pm.response.json();\r",
+													"//pm.test(\"Validacion de codigo de respuesta y mensaje\")\r",
+													"pm.test(data.nombre_caso, function() {\r",
+													"    pm.expect(responseJson.code).to.equal(data.cod_rta);\r",
+													"    pm.expect(responseJson.message).to.equal(data.mensaje_rta);\r",
+													"})  \r",
+													"\r",
+													"}else\r",
+													"        if (data.status === 500)\r",
+													"        {\r",
+													"\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        }else\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        \r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// obtencion de access token\r",
+													"if (data.token === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+													"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"\r",
+													"//fin obtencion access token\r",
+													"\r",
+													"/////////////////////////////////////////////////////////////////////\r",
+													"\r",
+													"//logica para correr el fixer\r",
+													"\r",
+													"if (data.flag === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'http://wapp-ttpm215:8085/restBr/services/fixer/exe',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/json',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\"solicitud\":\"setFdbfFactura;idCliente={{{{data.idCliente}}}};fiid={{{{data.fiid}}}};idFactura={{{{data.idFactura}}}};changeAttr=fechaDePago:{{{{data.fechaDePago}}}}\"})\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"\r",
+													"// fin logica fixer"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"consumer_id\": {{consumer_id}},\n  \"document_type\": {{document_type}},\n  \"document_number\": {{document_number}},\n  \"channel\": {{channel}},\n  \"ip_address\": {{ip_address}},\n  \"terminal\": {{terminal}},\n  \"origin\": {{origin}},\n  \"timestamp\": {{timestamp}},\n  \"subscription\": {\n    \"type\": {{subscriptionType}},\n    \"category_id\": {{subscriptionCategory_id}},\n    \"company_id\": {{subscriptionCompany_id}},\n    \"customer_id\": {{subscriptionCustomer_id}},\n    \"additional_data\":{{subscriptionAdditional_data}},\n    \"amount\":{{subscriptionAmount}},\n    \"currency\": {{subscriptionCurrency}},\n    \"invoice_id\": {{subscriptionInvoice_id}}\n  },\n  \"recurrent_payment_type\": {{recurrent_payment_type}},\n  \"max_amount\": {{max_amount}},\n  \"date_from\": {{date_from}},\n  \"date_to\":{{date_to}},\n  \"first_due_date_only\": {{first_due_date_only}},\n  \"email\":{{email}},\n    \"card\": {\n        \"number\": {{card.number}},\n        \"expiration_date\": {{card.expiration_date}}\n    }  \n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments"
+											]
+										},
+										"description": "Post Login - Usuarios"
+									},
+									"response": []
+								},
+								{
+									"name": "ABM de PA (Con Cuenta) -  Autom - Con Access Token Copy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (data.TipoCaso === \"C\" || data.TipoCaso === \"T\" )\r",
+													"{\r",
+													"\r",
+													"if (data.status === 400 || data.status === 200)\r",
+													"{\r",
+													"const responseJson = pm.response.json();\r",
+													"//pm.test(\"Validacion de codigo de respuesta y mensaje\")\r",
+													"pm.test(data.nombre_caso, function() {\r",
+													"    pm.expect(responseJson.code).to.equal(data.cod_rta);\r",
+													"    pm.expect(responseJson.message).to.equal(data.mensaje_rta);\r",
+													"})  \r",
+													"\r",
+													"}else\r",
+													"        if (data.status === 500)\r",
+													"        {\r",
+													"\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        }else\r",
+													"\r",
+													"            pm.test(data.nombre_caso, function () {\r",
+													"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+													"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+													"                        });\r",
+													"        \r",
+													"\r",
+													"        \r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"// obtencion de access token\r",
+													"if (data.token === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/x-www-form-urlencoded',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'urlencoded',\r",
+													"        urlencoded: [\r",
+													"            \r",
+													"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+													"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+													"            \r",
+													"        ]\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+													"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"\r",
+													"//fin obtencion access token\r",
+													"\r",
+													"/////////////////////////////////////////////\r",
+													"\r",
+													"//logica para correr el fixer\r",
+													"\r",
+													"if (data.flag === 'si')\r",
+													"\r",
+													"{\r",
+													"\r",
+													"pm.sendRequest({\r",
+													"    url: 'http://wapp-ttpm215:8085/restBr/services/fixer/exe',\r",
+													"    method: 'POST',\r",
+													"    header:{\r",
+													"        'content-type': 'application/json',\r",
+													"    },\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\"solicitud\":\"setFdbfFactura;idCliente={{{{data.idCliente}}}};fiid={{{{data.fiid}}}};idFactura={{{{data.idFactura}}}};changeAttr=fechaDePago:{{{{data.fechaDePago}}}}\"})\r",
+													"    }\r",
+													"    }, function (err, response) {\r",
+													"                    console.log(response.json());\r",
+													"        });\r",
+													"\r",
+													"}\r",
+													"// fin logica fixer\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Bearer {{TOKEN_RP}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"consumer_id\": {{consumer_id}},\n  \"document_type\": {{document_type}},\n  \"document_number\": {{document_number}},\n  \"channel\": {{channel}},\n  \"ip_address\": {{ip_address}},\n  \"terminal\": {{terminal}},\n  \"origin\": {{origin}},\n  \"timestamp\": {{timestamp}},\n  \"subscription\": {\n    \"type\": {{subscriptionType}},\n    \"category_id\": {{subscriptionCategory_id}},\n    \"company_id\": {{subscriptionCompany_id}},\n    \"customer_id\": {{subscriptionCustomer_id}},\n    \"additional_data\":{{subscriptionAdditional_data}},\n    \"amount\":{{subscriptionAmount}},\n    \"currency\": {{subscriptionCurrency}},\n    \"invoice_id\": {{subscriptionInvoice_id}}\n  },\n  \"recurrent_payment_type\": {{recurrent_payment_type}},\n  \"max_amount\": {{max_amount}},\n  \"date_from\": {{date_from}},\n  \"date_to\":{{date_to}},\n  \"first_due_date_only\": {{first_due_date_only}},\n  \"email\": {{email}},\n  \"account\": {\n    \"type\": {{accountType}},\n    \"number\": {{accountNumber}},\n    \"currency\": {{accountCurrency}}\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+											"host": [
+												"{{MGMTSVR}}"
+											],
+											"path": [
+												"v1",
+												"pmc_services",
+												"bank_services",
+												"recurrent_payments"
+											]
+										},
+										"description": "Post Login - Usuarios"
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Verificar medios de pago - TC VISA",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+									"    method: 'POST',\r",
+									"    header:{\r",
+									"        'content-type': 'application/x-www-form-urlencoded',\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'urlencoded',\r",
+									"        urlencoded: [\r",
+									"            \r",
+									"                {key: \"client_id\",value:\"fndtXRfeyzGmeNTo7wuoJDu7iIBj54vv\"},\r",
+									"                {key: \"client_secret\", value:\"oQXXB4feDssXWurq\"}\r",
+									"            \r",
+									"        ]\r",
+									"    }\r",
+									"    }, function (err, response) {\r",
+									"                    console.log(response.json());\r",
+									"                    pm.globals.set(\"TOKEN\", response.json().access_token);\r",
+									"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+									"        });\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"22000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 999999.99,\r\n  \"first_due_date_only\": true,\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "http://192.168.76.33:8080/marketplace-middleware/internal/rest/v1/tarjetas/4540738001897200",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"76",
+								"33"
+							],
+							"port": "8080",
+							"path": [
+								"marketplace-middleware",
+								"internal",
+								"rest",
+								"v1",
+								"tarjetas",
+								"4540738001897200"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar medios de pago - TD VISA",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+									"    method: 'POST',\r",
+									"    header:{\r",
+									"        'content-type': 'application/x-www-form-urlencoded',\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'urlencoded',\r",
+									"        urlencoded: [\r",
+									"            \r",
+									"                {key: \"client_id\",value:\"fndtXRfeyzGmeNTo7wuoJDu7iIBj54vv\"},\r",
+									"                {key: \"client_secret\", value:\"oQXXB4feDssXWurq\"}\r",
+									"            \r",
+									"        ]\r",
+									"    }\r",
+									"    }, function (err, response) {\r",
+									"                    console.log(response.json());\r",
+									"                    pm.globals.set(\"TOKEN\", response.json().access_token);\r",
+									"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+									"        });\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"22000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 999999.99,\r\n  \"first_due_date_only\": true,\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "http://192.168.76.33:8080/marketplace-middleware/internal/rest/v1/tarjetas/4517721004856075",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"76",
+								"33"
+							],
+							"port": "8080",
+							"path": [
+								"marketplace-middleware",
+								"internal",
+								"rest",
+								"v1",
+								"tarjetas",
+								"4517721004856075"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar medios de pago - TC AMEX",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+									"    method: 'POST',\r",
+									"    header:{\r",
+									"        'content-type': 'application/x-www-form-urlencoded',\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'urlencoded',\r",
+									"        urlencoded: [\r",
+									"            \r",
+									"                {key: \"client_id\",value:\"fndtXRfeyzGmeNTo7wuoJDu7iIBj54vv\"},\r",
+									"                {key: \"client_secret\", value:\"oQXXB4feDssXWurq\"}\r",
+									"            \r",
+									"        ]\r",
+									"    }\r",
+									"    }, function (err, response) {\r",
+									"                    console.log(response.json());\r",
+									"                    pm.globals.set(\"TOKEN\", response.json().access_token);\r",
+									"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+									"        });\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"22000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 999999.99,\r\n  \"first_due_date_only\": true,\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "http://192.168.76.33:8080/marketplace-middleware/internal/rest/v1/tarjetas/371593800136876",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"76",
+								"33"
+							],
+							"port": "8080",
+							"path": [
+								"marketplace-middleware",
+								"internal",
+								"rest",
+								"v1",
+								"tarjetas",
+								"371593800136876"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar medios de pago - TC Master",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+									"    method: 'POST',\r",
+									"    header:{\r",
+									"        'content-type': 'application/x-www-form-urlencoded',\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'urlencoded',\r",
+									"        urlencoded: [\r",
+									"            \r",
+									"                {key: \"client_id\",value:\"fndtXRfeyzGmeNTo7wuoJDu7iIBj54vv\"},\r",
+									"                {key: \"client_secret\", value:\"oQXXB4feDssXWurq\"}\r",
+									"            \r",
+									"        ]\r",
+									"    }\r",
+									"    }, function (err, response) {\r",
+									"                    console.log(response.json());\r",
+									"                    pm.globals.set(\"TOKEN\", response.json().access_token);\r",
+									"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+									"        });\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {
+							"accept": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"consumer_id\": \"GLCA\",\r\n  \"document_type\": \"DNI\",\r\n  \"document_number\": \"22000000\",\r\n  \"channel\": \"E\",\r\n  \"ip_address\": \"10.10.22.22\",\r\n  \"terminal\": \"terminalGL\",\r\n  \"origin\": \"1\",\r\n  \"timestamp\": \"12345678901234\",\r\n  \"subscription\": {\r\n    \"type\": \"CREATE\",\r\n    \"category_id\": \"AGUA\",\r\n    \"company_id\": \"AYSA\",\r\n    \"customer_id\": \"0000000112\",\r\n    \"currency\": \"ARS\",\r\n    \"invoice_id\": \"FACTURA91\"\r\n  },\r\n  \"recurrent_payment_type\": \"AUTOMATIC\",\r\n  \"max_amount\": 999999.99,\r\n  \"first_due_date_only\": true,\r\n  \"email\": \"mail2@mail.com\",\r\n  \"account\": {\r\n    \"type\": \"11\",\r\n    \"number\": \"402191770755\",\r\n    \"currency\": \"ARS\"\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "http://192.168.76.33:8080/marketplace-middleware/internal/rest/v1/tarjetas/5505688230915366",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"76",
+								"33"
+							],
+							"port": "8080",
+							"path": [
+								"marketplace-middleware",
+								"internal",
+								"rest",
+								"v1",
+								"tarjetas",
+								"5505688230915366"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAccessToken - Recurrent_Paymets (OK) Con variable",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"pm.globals.set(\"TOKEN_RP\", data.access_token);\r",
+									"pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "grant_type",
+								"value": "client_credentials",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "b8aFqpLYYZLJmiVzklzPld3s6iAAMzRM",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "STx2QxE7H5dcAUfc",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials",
+							"protocol": "https",
+							"host": [
+								"api-qa",
+								"prismamediosdepago",
+								"com"
+							],
+							"path": [
+								"v1",
+								"oauth",
+								"accesstoken"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAccessToken - Recurrent_Paymets (OK) Con variable - SANDBOX",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody);\r",
+									"pm.globals.set(\"BPTOKENSANDBOX\", data.access_token);\r",
+									"pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "grant_type",
+								"value": "client_credentials",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "rwIDaRzCb4pSvGyE1QnzuTF0IgZThlstv",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "ifrRLZ6jyrdfKp72",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api-sandbox.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials",
+							"protocol": "https",
+							"host": [
+								"api-sandbox",
+								"prismamediosdepago",
+								"com"
+							],
+							"path": [
+								"v1",
+								"oauth",
+								"accesstoken"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AUTOM",
+			"item": [
+				{
+					"name": "ABM de PA (Con Cuenta) -  Autom - Con Access Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (data.status === 400 || data.status === 200)\r",
+									"{\r",
+									"const responseJson = pm.response.json();\r",
+									"//pm.test(\"Validacion de codigo de respuesta y mensaje\")\r",
+									"pm.test(data.nombre_caso, function() {\r",
+									"    pm.expect(responseJson.code).to.equal(data.cod_rta);\r",
+									"    pm.expect(responseJson.message).to.equal(data.mensaje_rta);\r",
+									"}) \r",
+									"\r",
+									"var Ajv = require('ajv'),\r",
+									"    ajv = new Ajv({logger: console}),\r",
+									"    schema = \r",
+									"{\r",
+									"    \"required\": [\r",
+									"        \"code\",\r",
+									"        \"message\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"code\": {\r",
+									"            \"$id\": \"#/properties/code\",\r",
+									"            \"type\": \"string\"\r",
+									"        },\r",
+									"        \"message\": {\r",
+									"            \"$id\": \"#/properties/message\",\r",
+									"            \"type\": \"string\"\r",
+									"        }\r",
+									"    },\r",
+									"    \"$id\": \"http://example.org/root.json#\",\r",
+									"    \"type\": \"object\",\r",
+									"    \"definitions\": {},\r",
+									"    \"$schema\": \"http://json-schema.org/draft-07/schema#\"\r",
+									"};\r",
+									" \r",
+									"pm.test('Schema is valid', function() {\r",
+									"    pm.expect(ajv.validate(schema, pm.response.json()), JSON.stringify(ajv.errors)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"}else\r",
+									"        if (data.status === 500)\r",
+									"        {\r",
+									"\r",
+									"\r",
+									"            pm.test(data.nombre_caso, function () {\r",
+									"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+									"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+									"                        });\r",
+									"        \r",
+									"\r",
+									"        }else\r",
+									"\r",
+									"            pm.test(data.nombre_caso, function () {\r",
+									"                        pm.expect(pm.response.text()).to.include(data.title);\r",
+									"                        pm.expect(pm.response.text()).to.include(data.cod_rta);\r",
+									"                        });\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// obtencion de access token\r",
+									"if (data.token === 'si')\r",
+									"\r",
+									"{\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: 'https://api-qa.prismamediosdepago.com/v1/oauth/accesstoken?grant_type=client_credentials',\r",
+									"    method: 'POST',\r",
+									"    header:{\r",
+									"        'content-type': 'application/x-www-form-urlencoded',\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'urlencoded',\r",
+									"        urlencoded: [\r",
+									"            \r",
+									"                {key: \"client_id\",value:\"dRAvJy0px7VAqoRpct7i7L4YBCjAwmgG\"},\r",
+									"                {key: \"client_secret\", value:\"OVVbj2ZUuwiFOeuA\"}\r",
+									"            \r",
+									"        ]\r",
+									"    }\r",
+									"    }, function (err, response) {\r",
+									"                    console.log(response.json());\r",
+									"                    pm.globals.set(\"TOKEN_RP\", response.json().access_token);\r",
+									"                    pm.globals.set(\"MGMTSVR\", \"https://api-qa.prismamediosdepago.com\");\r",
+									"        });\r",
+									"\r",
+									"}\r",
+									"\r",
+									"//fin obtencion access token\r",
+									"\r",
+									"/////////////////////////////////////////////\r",
+									"\r",
+									"//logica para correr el fixer\r",
+									"\r",
+									"if (data.flag === 'si')\r",
+									"\r",
+									"{\r",
+									"\r",
+									"pm.sendRequest({\r",
+									"    url: 'http://wapp-ttpm215:8085/restBr/services/fixer/exe',\r",
+									"    method: 'POST',\r",
+									"    header:{\r",
+									"        'content-type': 'application/json',\r",
+									"    },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\"solicitud\":\"setFdbfFactura;idCliente={{{{data.idCliente}}}};fiid={{{{data.fiid}}}};idFactura={{{{data.idFactura}}}};changeAttr=fechaDePago:{{{{data.fechaDePago}}}}\"})\r",
+									"    }\r",
+									"    }, function (err, response) {\r",
+									"                    console.log(response.json());\r",
+									"        });\r",
+									"\r",
+									"}\r",
+									"// fin logica fixer\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{TOKEN_RP}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"consumer_id\": {{consumer_id}},\n  \"document_type\": {{document_type}},\n  \"document_number\": {{document_number}},\n  \"channel\": {{channel}},\n  \"ip_address\": {{ip_address}},\n  \"terminal\": {{terminal}},\n  \"origin\": {{origin}},\n  \"timestamp\": {{timestamp}},\n  \"subscription\": {\n    \"type\": {{subscriptionType}},\n    \"category_id\": {{subscriptionCategory_id}},\n    \"company_id\": {{subscriptionCompany_id}},\n    \"customer_id\": {{subscriptionCustomer_id}},\n    \"additional_data\":{{subscriptionAdditional_data}},\n    \"amount\":{{subscriptionAmount}},\n    \"currency\": {{subscriptionCurrency}},\n    \"invoice_id\": {{subscriptionInvoice_id}}\n  },\n  \"recurrent_payment_type\": {{recurrent_payment_type}},\n  \"max_amount\": {{max_amount}},\n  \"date_from\": {{date_from}},\n  \"date_to\":{{date_to}},\n  \"first_due_date_only\": {{first_due_date_only}},\n  \"email\": {{email}},\n  \"account\": {\n    \"type\": {{accountType}},\n    \"number\": {{accountNumber}},\n    \"currency\": {{accountCurrency}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{MGMTSVR}}/v1/pmc_services/bank_services/recurrent_payments",
+							"host": [
+								"{{MGMTSVR}}"
+							],
+							"path": [
+								"v1",
+								"pmc_services",
+								"bank_services",
+								"recurrent_payments"
+							]
+						},
+						"description": "Post Login - Usuarios"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
